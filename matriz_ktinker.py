@@ -9,7 +9,7 @@ from xml.etree.ElementInclude import include
 
 import numpy as np #matrix
 import sys
-
+from distutils import command
 #===============================================================================================================================================================================================
 ##include matrix ##
 ## Crear la GUI ##
@@ -21,63 +21,64 @@ app.config(bg = "lavenderblush3")
 # definir Gauss - Jordan#   
 ##def GAUSSJORDAN ##
 # class GaussJordan:
+
 def setMatrix():
     z = np.zeros((4,5))
-    
-    
-    # Recuperamos los coeficientes de la ec.A
-    z[0][0] = casilla00.get()
-    z[0][1] = casilla10.get()
-    z[0][2] = casilla20.get()
-    z[0][3] = casilla30.get()
-    z[0][4] = casilla40.get()
 
-    # Recuperamos los coeficientes de la ec.B
-    z[1][0] = casilla01.get()
-    z[1][1] = casilla11.get()
-    z[1][2] = casilla21.get()
-    z[1][3] = casilla31.get()
-    z[1][4] = casilla41.get()
+    for i in range(4):
+        for j in range(5):
+            
+        # Recuperamos los coeficientes de la ec.A
+         z[0][0] = casilla00.get()
+         z[0][1] = casilla01.get()
+         z[0][2] = casilla02.get()
+         z[0][3] = casilla03.get()
+         z[0][4] = casilla04.get()
 
-    # Recuperamos los coeficientes de la ec.C    
-    z[2][0] = casilla02.get()
-    z[2][1] = casilla12.get()
-    z[2][2] = casilla22.get()
-    z[2][3] = casilla32.get()
-    z[2][4] = casilla42.get()
+        # Recuperamos los coeficientes de la ec.B
+         z[1][0] = casilla10.get()
+         z[1][1] = casilla11.get()
+         z[1][2] = casilla12.get()
+         z[1][3] = casilla13.get()
+         z[1][4] = casilla14.get()
 
-    # Recuperamos los coeficientes de la ec.D
-        
-    z[3][0] = casilla03.get()
-    z[3][1] = casilla13.get()
-    z[3][2] = casilla23.get()
-    z[3][3] = casilla33.get()
-    z[3][4] = casilla43.get()
+        # Recuperamos los coeficientes de la ec.C    
+         z[2][0] = casilla20.get()
+         z[2][1] = casilla21.get()
+         z[2][2] = casilla22.get()
+         z[2][3] = casilla23.get()
+         z[2][4] = casilla24.get()
 
-    
+        # Recuperamos los coeficientes de la ec.D
+            
+         z[3][0] = casilla30.get()
+         z[3][1] = casilla31.get()
+         z[3][2] = casilla32.get()
+         z[3][3] = casilla33.get()
+         z[3][4] = casilla34.get()
+
     return z
 
-def GJ(z, resultados):
-    x = np.zeros((4,1))
-    # Eliminación Gaussiana
-    for i in range(4):
-        if z[i][j] == 0.0:
-            sys.exit('Alto! Divides entre 0!')
-        for j in range(4):
-            if i != j:
-                r = z[j][i] / z[i][i]
-            for k in range (5):
-                z[j][k] = z[j][k] - r * z[i][k]
+def GJ(z):
+ x = np.zeros(4)
+    # Leyendo los coeficientes de la matriz
+# Eliminación de Gauss - Jordan
+ for i in range(4):
+                if z[i][i] == 0.0:
+                    sys.exit('¡División entre cero!')
+        
+ for j in range(4):
+    if i != j:
+     ratio = z[j][i]/z[i][i]
 
-    # Para la solución
-    for i in range (4):
-        x[i] = z[i][4] / z[i][i]
+     for k in range(5):
+      z[j][k] = z[j][k] - ratio * z[i][k]
 
-    # Mostrar la solución en consola
-    resultados = print('\nSolución: ')
-    for i in range(4):
-        print('X%d = %0.2f' %(i, x[i]), end = '\t')
- 
+# Solución
+    solucion = z[i]
+ for i in range(4):
+  z[i] = z[i][4]/[i][i]
+  return solucion
 #===============================================================================================================================================================================================
 # Título#
 T = Frame(app)
@@ -94,7 +95,7 @@ titulo2 = Label (E, text = "Tránsito Vial", font= ("Calibri", 25))
 titulo2.grid(column = 0, row = 0, sticky = NS, pady = 5)
 titulo2.config(bg = "lavenderblush3", fg = "white")
 
-
+#===============================================================================================================================================================================================
 # imágenes (descripción y esquema)
 img1 = PhotoImage(file ="descripción Small.png")
 
@@ -111,11 +112,13 @@ lbl_img2.config(bg = "lavenderblush3")
 lbl_img2.columnconfigure(0, weight=1)
 lbl_img2.rowconfigure(1, weight= 250)
 #===============================================================================================================================================================================================
-## Etiquetas formato GRID
+## Etiquetas formato GRID##
+
 # espacio en blanco
 etiqueta = Label(app)
 etiqueta.grid(column = 1, row = 1)
 etiqueta.config(bg = "lavenderblush3")
+
 # Filas de intersección con cuadros de texto 
 # A
 A = Frame(app)
@@ -125,19 +128,29 @@ etiqueta0 = Label (A, text = "A", width = 5)
 etiqueta0.grid(column = 1, row = 2, ipadx = 5, ipady = 5, sticky = NS, pady = 5)
 etiqueta0.config(bg = "lavenderblush3", fg = "white")
 
+# Casillas por fila 0
 casilla00 = Entry (app, width = 5)
-casilla10 = Entry (app, width = 5)
-casilla20 = Entry (app, width = 5)
-casilla30 = Entry (app, width = 5)
-casilla40 = Entry (app, width = 5)
+casilla01 = Entry (app, width = 5)
+casilla02 = Entry (app, width = 5)
+casilla03 = Entry (app, width = 5)
+casilla04 = Entry (app, width = 5)
 
 
 casilla00.grid(column = 2, row = 2, sticky = N, padx = 2)
-casilla10.grid(column = 3, row = 2, sticky = N, padx = 2)
-casilla20.grid(column = 4, row = 2, sticky = N, padx = 2)
-casilla30.grid(column = 5, row = 2, sticky = N, padx = 2)
-casilla40.grid(column = 6, row = 2, sticky = N, padx = 2)
+casilla01.grid(column = 3, row = 2, sticky = N, padx = 2)
+casilla02.grid(column = 4, row = 2, sticky = N, padx = 2)
+casilla03.grid(column = 5, row = 2, sticky = N, padx = 2)
+casilla04.grid(column = 6, row = 2, sticky = N, padx = 2)
 
+casilla00.insert(0, "1")
+casilla01.insert(0, "1")
+casilla02.insert(0, "0")
+casilla03.insert(0, "0")
+
+casilla00.configure(state='disabled')
+casilla01 .configure(state='disabled')
+casilla02 .configure(state='disabled')
+casilla03 .configure(state='disabled')
 
 #B
 B = Frame(app)
@@ -149,18 +162,30 @@ etiqueta1 = Label (B, text = "B", width = 5)
 etiqueta1.grid(column = 1, row = 3, ipadx = 5, ipady = 5, pady = 5, sticky = NS)
 etiqueta1.config(bg = "lavenderblush3", fg = "white")
 
-casilla01 = Entry (app, width = 5)
+#Casillas por fila 1
+casilla10 = Entry (app, width = 5)
 casilla11 = Entry (app, width = 5)
-casilla21 = Entry (app, width = 5)
-casilla31 = Entry (app, width = 5)
-casilla41 = Entry (app, width = 5)
+casilla12 = Entry (app, width = 5)
+casilla13 = Entry (app, width = 5)
+casilla14 = Entry (app, width = 5)
 
 
-casilla01.grid(column = 2, row = 3, sticky = N, padx = 2)
+casilla10.grid(column = 2, row = 3, sticky = N, padx = 2)
 casilla11.grid(column = 3, row = 3, sticky = N, padx = 2)
-casilla21.grid(column = 4, row = 3, sticky = N, padx = 2)
-casilla31.grid(column = 5, row = 3, sticky = N, padx = 2)
-casilla41.grid(column = 6, row = 3, sticky = N, padx = 2)
+casilla12.grid(column = 4, row = 3, sticky = N, padx = 2)
+casilla13.grid(column = 5, row = 3, sticky = N, padx = 2)
+casilla14.grid(column = 6, row = 3, sticky = N, padx = 2)
+
+casilla10.insert(0, "1")
+casilla11.insert(0, "0")
+casilla12.insert(0, "1")
+casilla13.insert(0, "0")
+
+casilla10.configure(state='disabled')
+casilla11 .configure(state='disabled')
+casilla12 .configure(state='disabled')
+casilla13 .configure(state='disabled')
+
 
 # C
 C = Frame(app)
@@ -172,18 +197,30 @@ etiqueta2 = Label (C, text = "C", width = 5)
 etiqueta2.grid(column = 1, row = 4, ipadx = 5, ipady = 5, pady = 5, sticky = NS)
 etiqueta2.config(bg = "lavenderblush3", fg = "white")
 
-casilla02 = Entry (app, width = 5)
-casilla12 = Entry (app, width = 5)
+# Casillas por fila 2
+casilla20 = Entry (app, width = 5)
+casilla21 = Entry (app, width = 5)
 casilla22 = Entry (app, width = 5)
-casilla32 = Entry (app, width = 5)
-casilla42 = Entry (app, width = 5)
+casilla23 = Entry (app, width = 5)
+casilla24 = Entry (app, width = 5)
 
 
-casilla02.grid(column = 2, row = 4, sticky = N, padx = 2)
-casilla12.grid(column = 3, row = 4, sticky = N, padx = 2)
+casilla20.grid(column = 2, row = 4, sticky = N, padx = 2)
+casilla21.grid(column = 3, row = 4, sticky = N, padx = 2)
 casilla22.grid(column = 4, row = 4, sticky = N, padx = 2)
-casilla32.grid(column = 5, row = 4, sticky = N, padx = 2)
-casilla42.grid(column = 6, row = 4, sticky = N, padx = 2)
+casilla23.grid(column = 5, row = 4, sticky = N, padx = 2)
+casilla24.grid(column = 6, row = 4, sticky = N, padx = 2)
+
+casilla20.insert(0, "0")
+casilla21.insert(0, "0")
+casilla22.insert(0, "1")
+casilla23.insert(0, "1")
+
+casilla20.configure(state='disabled')
+casilla21 .configure(state='disabled')
+casilla22 .configure(state='disabled')
+casilla23 .configure(state='disabled')
+
 
 # D
 D = Frame(app)
@@ -195,18 +232,30 @@ etiqueta3 = Label (D, text = "D", width = 5)
 etiqueta3.grid(column = 1, row = 5, ipadx = 5, ipady = 5, pady = 5, sticky = NS)
 etiqueta3.config(bg = "lavenderblush3", fg = "white")
 
-casilla03 = Entry (app, width = 5)
-casilla13 = Entry (app, width = 5)
-casilla23 = Entry (app, width = 5)
+# Casillas por fila 3
+casilla30 = Entry (app, width = 5)
+casilla31 = Entry (app, width = 5)
+casilla32 = Entry (app, width = 5)
 casilla33 = Entry (app, width = 5)
-casilla43 = Entry (app, width = 5)
+casilla34 = Entry (app, width = 5)
 
 
-casilla03.grid(column = 2, row = 5, sticky = N, padx = 2)
-casilla13.grid(column = 3, row = 5, sticky = N, padx = 2)
-casilla23.grid(column = 4, row = 5, sticky = N, padx = 2)
+casilla30.grid(column = 2, row = 5, sticky = N, padx = 2)
+casilla31.grid(column = 3, row = 5, sticky = N, padx = 2)
+casilla32.grid(column = 4, row = 5, sticky = N, padx = 2)
 casilla33.grid(column = 5, row = 5, sticky = N, padx = 2)
-casilla43.grid(column = 6, row = 5, sticky = N, padx = 2)
+casilla34.grid(column = 6, row = 5, sticky = N, padx = 2)
+
+casilla30.insert(0, "0")
+casilla31.insert(0, "1")
+casilla32.insert(0, "0")
+casilla33.insert(0, "1")
+
+casilla30.configure(state='disabled')
+casilla31 .configure(state='disabled')
+casilla32 .configure(state='disabled')
+casilla33 .configure(state='disabled')
+
 
 # Columnas f (flujos)
 # f1
@@ -269,57 +318,36 @@ etiqueta8.config(bg = "lavenderblush3", fg = "white")
 etiqueta8.columnconfigure(6, weight=1)
 etiqueta8.rowconfigure(1, weight= 1)
 
-
-#===============================================================================================================================================================================================
-# Botones 
-# Para guardar los datos ingresados#
-botonguardar = Button(app, text = "Guardar", fg = "white", width = 5, command = setMatrix) #AGREGAR DEF DE GAUSS-JORDAN
-botonguardar.grid(column = 3, row = 6, sticky = NS, columnspan= 3)
-botonguardar.config(bg = "lavenderblush3", fg = "black")
-
-# Enviar datos y aplicar GJ
-botonenviar = Button(app, text = "Enviar", fg = "white", width = 5,command = GJ) #AGREGAR DEF DE GAUSS-JORDAN
-botonenviar.grid(column = 3, row = 7, sticky = NS, columnspan= 3)
-botonenviar.config(bg = "lavenderblush3", fg = "black")
-
-
-# Ver resultados
-# lbl_resultado = Label(app, text = print('X%d = %0.2f' %(i, x[i]), end = '\t'))
-# lbl_resultado.grid(column = 4, row = 8, sticky = NS)
-# lbl_resultado.config(bg = "white")
-
-def openNewWindow(): 
-      
-    
-    
-    newWindow = Toplevel(app) 
-  
-    
-    
-    newWindow.title("Resultados") 
-  
-    
-    newWindow.geometry("200x200") 
-    newWindow.config(bg = "lavenderblush3")
-    
-    Label(newWindow,  
-          text ="Valores de las variables")
-
-    label.config(bg = "lavenderblush3", fg = "black")
-
-   #################### result = Label(newWindow, text = ) ############################
-    result.config(bg = "lavenderblush3", fg = "black")
-    result.pack()
-  
+# etiqueta cargando...#
 label = Label(app,  
               text ="Calculando...", font = ("Calibri", 16)) 
   
-label.grid (column = 4, row = 0)
+label.grid (column = 3, row = 0, columnspan= 3)
 
+#===============================================================================================================================================================================================
+##Hacer que funcionen las clases##
+# Enviar datos y aplicar GJ
+botonenviar = Button(app, text = "Enviar", fg = "white", width = 5, command = (setMatrix, GJ)) #AGREGAR DEF DE GAUSS-JORDAN
+botonenviar.grid(column = 3, row = 7, sticky = NS, columnspan= 3)
+botonenviar.config(bg = "lavenderblush3", fg = "black")
+
+## Ventana de resultados##
+def openNewWindow(): 
+    Window2 = Toplevel(app) 
+    Window2.title("Resultados") 
+
+    Window2.config(bg = "lavenderblush3")
+
+
+
+# Botón para ir a la ventana resultados#
 btn = Button(app,  
              text ="Obtener resultados",  
              command = openNewWindow) 
-btn.grid(column = 3, row = 9, columnspan=3, sticky= NS) 
+btn.grid(column = 3, row = 10, columnspan=3, sticky= NS, ipadx= 1, ipady= 1, pady= 10) 
 label.config(bg = "lavenderblush3", fg = "white")
-  
+
+ 
+
 app.mainloop()
+
