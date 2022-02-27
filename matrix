@@ -1,0 +1,56 @@
+import sys
+import numpy as np
+
+# llenar la matriz
+print('\n----- Entrada de valores -----\n')
+v = int(input('Número de ecuaciones: '))
+c = 2 * v
+z = np.zeros((v,v))
+
+print ('\nCoeficientes de la matriz aumentada: ')
+for i in range(v):
+  for j in range(v):
+    z[i][j] = float(input('Valor del elemento [' + str(i) + '][' + str(j) + ']: '))
+A = z
+print(A)
+
+print('\n----- Entrada de valores -----\n')
+# concatener A e I
+I = np.identity(v)
+zI = np.concatenate([z, I], axis = 1) # axis = 1 -> concatenar columnas
+print('\nMatriz A e I concatenadas: \n', zI)
+
+
+f = len(zI)
+s = 2 * len(zI) 
+print('\nfilas de zI: ', f, '\ncolumnas de zI: ', s, '\n')
+
+# Gauss (ceros debajo de la diagonal principal)
+for i in range(f):
+  if zI[i][j] == 0.0:
+    sys.exit('Alto! Disión entre 0!')
+  for j in range (f):
+    if i != j:
+      r = zI[j][i] / zI[i][i]
+      for k in range(s):
+        zI[j][k] = zI[j][k] - r * zI[i][k]
+
+print('Aplicando eliminación Gaussiana (hacia abajo):\n', zI)
+
+# Gauss Jordan (ceros arriba de la diagonal principal)
+for i in range(f):
+  p = zI[f-1-i][f-1-i]
+  zI[f-1-i] = zI[f-1-i]/p
+  for j in range(f-1-i):
+    zI[j] = zI[j] - zI[j][f-1-i] * zI[f-1-i] 
+
+print('\nAplicando GJ (hacia arriba):\n', zI)
+
+# AA^-1 = I
+
+I,AI = np.hsplit(zI,2)
+AdotAI = np.dot(A,AI)
+
+print('Matriz A:\n', A)
+print('\nMatriz invertida A^-1:\n', AI)
+print('\nProducto AA^-1:\n', AdotAI)
