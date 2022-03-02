@@ -10,6 +10,7 @@ from xml.etree.ElementInclude import include
 import numpy as np #matrix
 import sys
 from distutils import command
+from GaussJordan import * 
 #===============================================================================================================================================================================================
 ##include matrix ##
 ## Crear la GUI ##
