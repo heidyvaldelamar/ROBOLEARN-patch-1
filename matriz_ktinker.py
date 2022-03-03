@@ -10,84 +10,25 @@ from xml.etree.ElementInclude import include
 import numpy as np #matrix
 import sys
 from distutils import command
-from GaussJordan import * 
+from GaussJ import * # importamos la función de GaussJordan 
 #===============================================================================================================================================================================================
 ##include matrix ##
 ## Crear la GUI ##
-app = Tk()  # contenedor
-app.title("Calculadora de Tránsito Vial") 
-app.config(bg = "lavenderblush3")
+app = Tk()  # ventana principal
+app.title("Calculadora de Tránsito Vial") # Título de la ventana principal
+app.config(bg = "lavenderblush3") # Definir el color del background de la ventana principal
 
-
-# definir Gauss - Jordan#   
-##def GAUSSJORDAN ##
-# class GaussJordan:
-
-def setMatrix():
-    z = np.zeros((4,5))
-
-    for i in range(4):
-        for j in range(5):
-            
-        # Recuperamos los coeficientes de la ec.A
-         z[0][0] = casilla00.get()
-         z[0][1] = casilla01.get()
-         z[0][2] = casilla02.get()
-         z[0][3] = casilla03.get()
-         z[0][4] = casilla04.get()
-
-        # Recuperamos los coeficientes de la ec.B
-         z[1][0] = casilla10.get()
-         z[1][1] = casilla11.get()
-         z[1][2] = casilla12.get()
-         z[1][3] = casilla13.get()
-         z[1][4] = casilla14.get()
-
-        # Recuperamos los coeficientes de la ec.C    
-         z[2][0] = casilla20.get()
-         z[2][1] = casilla21.get()
-         z[2][2] = casilla22.get()
-         z[2][3] = casilla23.get()
-         z[2][4] = casilla24.get()
-
-        # Recuperamos los coeficientes de la ec.D
-            
-         z[3][0] = casilla30.get()
-         z[3][1] = casilla31.get()
-         z[3][2] = casilla32.get()
-         z[3][3] = casilla33.get()
-         z[3][4] = casilla34.get()
-
-    return z
-
-def GJ(z):
- x = np.zeros(4)
-    # Leyendo los coeficientes de la matriz
-# Eliminación de Gauss - Jordan
- for i in range(4):
-                if z[i][i] == 0.0:
-                    sys.exit('¡División entre cero!')
-        
- for j in range(4):
-    if i != j:
-     ratio = z[j][i]/z[i][i]
-
-     for k in range(5):
-      z[j][k] = z[j][k] - ratio * z[i][k]
-
-# Solución
-    solucion = z[i]
- for i in range(4):
-  z[i] = z[i][4]/[i][i]
-  return solucion
 #===============================================================================================================================================================================================
-# Título#
-T = Frame(app)
-T.grid(column = 0, row = 0, sticky = NS)
-T.config(bg = "lavenderblush3")
-titulo = Label (T, text = "Método de Gauss - Jordan", font= ("Calibri", 25))
-titulo.grid(column = 0, row = 0, sticky = NS, pady = 5)
-titulo.config(bg = "lavenderblush3", fg = "white")
+# Título 1 que corresponde a la descripción del problema#
+T = Frame(app) # Ubicamos el frame del Título en la ventana principal
+T.grid(column = 0, row = 0, sticky = NS) #Damos una posición al frame (sticky corresponde a la orientación del frame centrado)
+T.config(bg = "lavenderblush3") # Definimos el color del frame
+
+titulo = Label (T, text = "Método de Gauss - Jordan", font= ("Calibri", 25)) #Agregamos texto al frame del título
+titulo.grid(column = 0, row = 0, sticky = NS, pady = 5) # Damos posición al texto del título (pady se refiere al margen exterior del grid)
+titulo.config(bg = "lavenderblush3", fg = "white") # Configura el color del fondo y de texto
+
+# Seguir los mismos pasos para el segundo título, este título corresponde a la imagen del esquema
 
 E = Frame(app)
 E.grid(column = 7, row = 0, sticky = NS)
@@ -98,15 +39,18 @@ titulo2.config(bg = "lavenderblush3", fg = "white")
 
 #===============================================================================================================================================================================================
 # imágenes (descripción y esquema)
-img1 = PhotoImage(file ="descripción Small.png")
+img1 = PhotoImage(file ="descripción Small.png") # Usamos PhotoImage para insertar una imagen 
 
-lbl_img1 = Label(app, image = img1)
-lbl_img1.grid(column = 0, row = 1, rowspan = 7, ipadx= 20, ipady= 20)
-lbl_img1.config(bg = "lavenderblush3")
-lbl_img1.columnconfigure(0, weight=1)
+lbl_img1 = Label(app, image = img1) # Con una etiqueta posicionamos la imágen en la ventana principal
+lbl_img1.grid(column = 0, row = 1, rowspan = 7, ipadx= 20, ipady= 20) # Posicionamos la imagen, rowspan sirve para seleccionar las filas que desees agrupar, ipadx y ipady son los parámetros que se definen para el margen interno del grid
+
+lbl_img1.config(bg = "lavenderblush3") # configuramos el fondo de la imagen
+lbl_img1.columnconfigure(0, weight=1) # la configuración de las columnas y filas sirven para especificar el tamaño que desees para la casilla
 lbl_img1.rowconfigure(1, weight= 250)
 
-img2 = PhotoImage(file ="esquema Small.png")
+# Damos los mismos parámetros para la imagen del esquema
+
+img2 = PhotoImage(file ="esquema Small.png") 
 lbl_img2 = Label(app, image = img2)
 lbl_img2.grid(column = 7, row = 1, rowspan= 7, ipadx= 20, ipady= 20)
 lbl_img2.config(bg = "lavenderblush3")
@@ -115,12 +59,12 @@ lbl_img2.rowconfigure(1, weight= 250)
 #===============================================================================================================================================================================================
 ## Etiquetas formato GRID##
 
-# espacio en blanco
+# espacio en blanco, corresponde a la casilla que va entre las intersecciones y variables
 etiqueta = Label(app)
 etiqueta.grid(column = 1, row = 1)
 etiqueta.config(bg = "lavenderblush3")
 
-# Filas de intersección con cuadros de texto 
+# Filas de intersección con cuadros de texto, primero hacemos un frame para posicionar cada etiqueta 
 # A
 A = Frame(app)
 A.grid(column = 1, row = 2, ipadx = 5, ipady = 5, sticky = NS)
@@ -129,6 +73,7 @@ etiqueta0 = Label (A, text = "A", width = 5)
 etiqueta0.grid(column = 1, row = 2, ipadx = 5, ipady = 5, sticky = NS, pady = 5)
 etiqueta0.config(bg = "lavenderblush3", fg = "white")
 
+# Usamos un Entry por cada casilla correspondiente a la matriz aumentada que nos proporcionará el usuario
 # Casillas por fila 0
 casilla00 = Entry (app, width = 5)
 casilla01 = Entry (app, width = 5)
@@ -143,16 +88,18 @@ casilla02.grid(column = 4, row = 2, sticky = N, padx = 2)
 casilla03.grid(column = 5, row = 2, sticky = N, padx = 2)
 casilla04.grid(column = 6, row = 2, sticky = N, padx = 2)
 
+# Para facilitar el llenado de la matriz damos valores predeterminados que están dados por defecto para cada intersección 
 casilla00.insert(0, "1")
 casilla01.insert(0, "1")
 casilla02.insert(0, "0")
 casilla03.insert(0, "0")
-
+# Dejamos los valores predeterminados como un modo de lectura para que el usuario no modifique por error las variables
 casilla00.configure(state='disabled')
 casilla01 .configure(state='disabled')
 casilla02 .configure(state='disabled')
 casilla03 .configure(state='disabled')
 
+#Repetimos los pasos para cada fila 
 #B
 B = Frame(app)
 B.grid(column = 1, row = 3, ipadx = 5, ipady = 5, sticky = NS)
@@ -258,7 +205,7 @@ casilla32 .configure(state='disabled')
 casilla33 .configure(state='disabled')
 
 
-# Columnas f (flujos)
+# Columnas f (flujos), agregamos los encabezados de las variables por columnas 
 # f1
 f1 = Frame(app)
 f1.grid(column = 2, row = 1, ipadx = 5, ipady = 5, sticky = NS)
@@ -319,6 +266,7 @@ etiqueta8.config(bg = "lavenderblush3", fg = "white")
 etiqueta8.columnconfigure(6, weight=1)
 etiqueta8.rowconfigure(1, weight= 1)
 
+# Esta etiqueta es para dejar un comentario en la ventana principal
 # etiqueta cargando...#
 label = Label(app,  
               text ="Calculando...", font = ("Calibri", 16)) 
@@ -326,21 +274,23 @@ label = Label(app,
 label.grid (column = 3, row = 0, columnspan= 3)
 
 #===============================================================================================================================================================================================
-##Hacer que funcionen las clases##
+##Hacer que funcionen las clases## Aún está en proceso
+# La idea es que con el parámetro command se pueda llamar a las funciones del archivo de Gauss Jordan que arroje los valores que proporciona el usuario y devuelva una respuesta en otra ventana
 # Enviar datos y aplicar GJ
-botonenviar = Button(app, text = "Enviar", fg = "white", width = 5, command = (setMatrix, GJ)) #AGREGAR DEF DE GAUSS-JORDAN
+botonenviar = Button(app, text = "Enviar", fg = "white", width = 5) ##command = setMatrix)
 botonenviar.grid(column = 3, row = 7, sticky = NS, columnspan= 3)
 botonenviar.config(bg = "lavenderblush3", fg = "black")
 
-## Ventana de resultados##
+## Ventana de resultados, definimos una nueva ventana para devolver los resultados de las variables 
 def openNewWindow(): 
     Window2 = Toplevel(app) 
     Window2.title("Resultados") 
 
     Window2.config(bg = "lavenderblush3")
+    resultados = Frame(Window2)## command = GJ)
 
 
-
+#Insertamos un botón en la ventana principal para ir a la ventana de resultados
 # Botón para ir a la ventana resultados#
 btn = Button(app,  
              text ="Obtener resultados",  
@@ -349,6 +299,6 @@ btn.grid(column = 3, row = 10, columnspan=3, sticky= NS, ipadx= 1, ipady= 1, pad
 label.config(bg = "lavenderblush3", fg = "white")
 
  
-
+# Con esto agregamos todos los widgets que creamos en la interfaz
 app.mainloop()
 
